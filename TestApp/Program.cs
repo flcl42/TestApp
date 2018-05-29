@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace TestApp
 {
     class Program
     {
         static void Main(string[] args)
-        { 
-            var Pistol = new Gun("9mm");
-            Pistol.StartTest();
+        {
+            Assembly Asm = Assembly.LoadFrom("TestApp.exe");
+            Type T = Asm.GetType("TestApp.Gun", true, true);
+            Object Obj = Activator.CreateInstance(T, new Object[] { "9mm" });
+            MethodInfo Method = T.GetMethod("StartTest");
+            Method.Invoke(Obj, new Object[] { });
             Console.Read();
         }
     }
